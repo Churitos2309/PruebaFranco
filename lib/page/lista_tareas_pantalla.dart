@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tareas_prueba_flutter/model/tarea_model.dart';
 import 'package:tareas_prueba_flutter/page/detalles_tarea_pantalla.dart';
+import 'package:tareas_prueba_flutter/page/nueva_tarea_pantalla.dart';
 
 class TaskListScreen extends StatefulWidget {
   @override
@@ -9,10 +10,26 @@ class TaskListScreen extends StatefulWidget {
 
 class _TaskListScreenState extends State<TaskListScreen> {
   final List<Task> tasks = [
-    Task(title: "Tarea 1", description: "Descripción", priority: "Alta", status: "Pendiente", progress: 0.2),
-    Task(title: "Tarea 2", description: "Descripción", priority: "Media", status: "En progreso", progress: 0.5),
+    Task(
+        title: "Tarea 1",
+        description: "Descripción",
+        priority: "Alta",
+        status: "Pendiente",
+        progress: 0.2),
+    Task(
+        title: "Tarea 2",
+        description: "Descripción",
+        priority: "Media",
+        status: "En progreso",
+        progress: 0.5),
     // Otras tareas...
   ];
+  // Método para añadir nuevas tareas
+  void _addNewTask(Task newTask) {
+    setState(() {
+      tasks.add(newTask);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +73,19 @@ class _TaskListScreenState extends State<TaskListScreen> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Acción para añadir nuevas tareas
+        onPressed: () async {
+          // Navegar a la pantalla para añadir una nueva tarea
+          final newTask = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => NewTaskScreen()),
+          );
+
+          if (newTask != null) {
+            _addNewTask(newTask);
+          }
         },
         child: Icon(Icons.add),
+        tooltip: 'Añadir Tarea',
       ),
     );
   }
